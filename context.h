@@ -1,4 +1,4 @@
-/* context.h - C coroutines
+/* context.h - C coroutines for x86_64
  *
  * Copyright (c) 2016, Eric Chai <electromatter@gmail.com>
  *
@@ -14,7 +14,11 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * Stacks on should be aligned to 16-bytes on x86_64.
+ * x86_64:
+ *  - Stacks on should be aligned to 16-bytes on x86_64.
+ *  - The initial stack uses 32 bytes before calling func
+ *  - Calls to leave_context use an additional 16 bytes (saved %rip and %rbp)
+ *      within the context
  *
  * A context is defined as a stack together with a saved stack pointer.
  *
