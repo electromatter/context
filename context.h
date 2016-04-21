@@ -30,7 +30,7 @@
  * call func with arg with the stack of the context.
  *
  * The return value of func is passed back to the parent context as
- * if leave_context(arg=<return value>) were called. The context is
+ * if leave_context(<return value of func>, top) were called. The context is
  * left in the reset state.
  *
  * It is save to reset a context that has a non-empty stack, so long
