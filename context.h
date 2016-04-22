@@ -14,11 +14,12 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * x86_64:
+ * sysv_amd64:
  *  - Stacks on should be aligned to 16-bytes on x86_64.
  *  - The initial stack uses 32 bytes before calling func
- *  - Calls to leave_context use an additional 16 bytes (saved %rip and %rbp)
+ *  - Calls to leave_context use an additional 56 bytes (saved %rip and %rbp)
  *      within the context
+ *  - A red zone of 128 bytes past the maximum push depth must be usable
  *
  * A context is defined as a stack together with a saved stack pointer.
  *
@@ -30,7 +31,7 @@
  * call func with arg with the stack of the context.
  *
  * The return value of func is passed back to the parent context as
- * if leave_context(<return value of func>, top) were called. The context is
+ * if leave_context(arg=<return value>) were called. The context is
  * left in the reset state.
  *
  * It is save to reset a context that has a non-empty stack, so long
