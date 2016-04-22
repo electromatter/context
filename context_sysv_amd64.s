@@ -17,7 +17,7 @@
 
 	.text
 
-	.p2align 4,,15
+	.p2align 4
 	.globl reset_context
 	.type reset_context, @function
 /* void reset_context(void *(*func)(void *arg), void *top, void **sp); */
@@ -52,7 +52,7 @@ reset_context:
 	jmp .L2
 	.cfi_endproc
 
-	.p2align 4,,15
+	.p2align 4
 	.globl enter_context
 	.type enter_context, @function
 /* void *enter_context(void *arg, void *top, void **sp); */
@@ -121,7 +121,7 @@ enter_context:
 	ret
 
 
-	.p2align 4,,15
+	.p2align 4
 	.globl call_context
 	.type call_context, @function
 /* void *call_context(void *arg, void *top, void **sp, void *(*func)(void *arg)); */
@@ -188,7 +188,7 @@ call_context:
 	leave
 	jmpq *%rcx
 
-	.p2align 4,,15
+	.p2align 4
 	.globl leave_context
 	.type leave_context, @function
 /* void *leave_context(void *arg, void *top); */
