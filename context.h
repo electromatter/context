@@ -55,6 +55,8 @@
 void reset_context(void *(*func)(void *arg), void *top, void **sp);
 /* Returns arg from the previous leave_context */
 void *enter_context(void *arg, void *top, void **sp);
+/* Returns func(arg) from the previous leave_context */
+void *call_context(void *arg, void *top, void **sp, void *(*func)(void *arg));
 
 /* Returns arg from the parent enter_context */
 void *leave_context(void *arg, void *top);

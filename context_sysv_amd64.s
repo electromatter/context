@@ -120,6 +120,74 @@ enter_context:
 	leave
 	ret
 
+
+	.p2align 4,,15
+	.globl call_context
+	.type call_context, @function
+/* void *call_context(void *arg, void *top, void **sp, void *(*func)(void *arg)); */
+call_context:
+	.cfi_startproc
+
+	pushq %rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset rbp,-16
+	movq %rsp, %rbp
+	.cfi_def_cfa_register rbp
+
+	movq %rbx, -8(%rbp)
+	.cfi_offset rbx,-24
+	movq %r12, -16(%rbp)
+	.cfi_offset r12,-32
+	movq %r13, -24(%rbp)
+	.cfi_offset r13,-40
+	movq %r14, -32(%rbp)
+	.cfi_offset r14,-48
+	movq %r15, -40(%rbp)
+	.cfi_offset r15,-56
+	fstcw -48(%rbp)
+	.cfi_offset fcw,-64
+	stmxcsr -56(%rbp)
+	.cfi_offset mxcsr,-72
+	movq %rdx, -64(%rbp)
+
+	movq %rsi, %rsp
+	call .L4
+
+	movq -64(%rbp), %rcx
+	ldmxcsr -56(%rbp)
+	.cfi_restore mxcsr
+	fldcw -48(%rbp)
+	.cfi_restore fcw
+	movq -40(%rbp), %r15
+	.cfi_restore r15
+	movq -32(%rbp), %r14
+	.cfi_restore r14
+	movq -24(%rbp), %r13
+	.cfi_restore r13
+	movq -16(%rbp), %r12
+	.cfi_restore r12
+	movq -8(%rbp), %rbx
+	.cfi_restore rbx
+
+	movq %rdx, (%rcx)
+
+	leave
+	.cfi_def_cfa rsp, 8
+	ret
+	.cfi_endproc
+.L4:
+	pushq %rbp
+	movq (%rdx), %rbp
+	ldmxcsr -56(%rbp)
+	fldcw -48(%rbp)
+	movq -40(%rbp), %r15
+	movq -32(%rbp), %r14
+	movq -24(%rbp), %r13
+	movq -16(%rbp), %r12
+	movq -8(%rbp), %rbx
+	leave
+	jmpq *%rcx
+
 	.p2align 4,,15
 	.globl leave_context
 	.type leave_context, @function
