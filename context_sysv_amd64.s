@@ -1,4 +1,4 @@
-/* context.s - C coroutines for x86_64
+/* context.s - C coroutines for the sysv amd64 calling convention
  *
  * Copyright (c) 2016, Eric Chai <electromatter@gmail.com>
  *
