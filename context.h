@@ -20,8 +20,8 @@
  *  - Calls to leave_context use an additional 64 bytes (saved %rip and %rbp)
  *      within the context
  *  - A red zone of 128 bytes past the maximum push depth must be usable
- *  - Stack should also be large enough to handle signals or use sigaltstack
- *      to set the signal handler stack
+ *  - Stack should also be large enough to handle signals or one should
+ *      use sigaltstack to set the signal handler stack
  *
  * A context is defined as a stack together with a saved stack pointer.
  *
