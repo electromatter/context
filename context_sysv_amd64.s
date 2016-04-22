@@ -97,6 +97,6 @@ leave_context:
 	stmxcsr -48(%rsp)
 	movq %rsp, %rdx
 	movq %rdi, %rax
-	leaq -16(%rsi), %rsp
+	leaq -16(%rsi), %rbp
 	leave
 	ret
