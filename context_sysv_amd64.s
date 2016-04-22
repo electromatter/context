@@ -17,10 +17,9 @@
 
 	.text
 
+	.p2align 4,,15
 	.globl reset_context
-	.globl enter_context
-	.globl leave_context
-
+	.type reset_context, @function
 /* void reset_context(void *(*func)(void *arg), void *top, void **sp); */
 reset_context:
 	pushq %rbp
@@ -46,6 +45,9 @@ reset_context:
 	movq %rax, %rdi
 	jmp .L2
 
+	.p2align 4,,15
+	.globl enter_context
+	.type enter_context, @function
 /* void *enter_context(void *arg, void *top, void **sp); */
 enter_context:
 	pushq %rbp
@@ -85,6 +87,9 @@ enter_context:
 	leave
 	ret
 
+	.p2align 4,,15
+	.globl leave_context
+	.type leave_context, @function
 /* void *leave_context(void *arg, void *top); */
 leave_context:
 	pushq %rbp
