@@ -40,7 +40,14 @@
  * as it is not active, but it may cause resource leaks if there are
  * any non trivial values that exist on the context's stack.
  *
+ * One way to force the stack to unwind in C++ is to use call_context with a
+ * stub function that throws an uncaught exceptions and catch the exception
+ * outside of call_context.
+ *
  * It is save to chain contexts, so long as one does not create loops.
+ *
+ * It is also safe to use leave_context from within the function called
+ * by call_context.
  *
  * Uncaught C++ exceptions from within an active context are passed
  * to the parent context. The originating context's stack will be
