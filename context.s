@@ -25,10 +25,10 @@
 reset_context:
 	pushq %rbp
 	movq %rsp, %rbp
-	movq %rdx, -16(%rbp)
+	movq %rdx, -8(%rsp)
 	movq %rsi, %rsp
 	call .L1
-	movq -16(%rbp), %rcx
+	movq -8(%rbp), %rcx
 	movq %rdx, (%rcx)
 	leave
 	ret
@@ -50,25 +50,45 @@ reset_context:
 enter_context:
 	pushq %rbp
 	movq %rsp, %rbp
+	movq %rbx, -8(%rsp)
+	movq %r12, -16(%rsp)
+	movq %r13, -24(%rsp)
+	movq %r14, -32(%rsp)
+	movq %r15, -40(%rsp)
+	movq %rdx, -48(%rsp)
 	movq %rdi, %rax
-	movq %rdx, -16(%rbp)
 	movq %rsi, %rsp
-	call .L3
-	movq -16(%rbp), %rcx
+	call .L4
+	movq -48(%rbp), %rcx
+	movq -40(%rbp), %r15
+	movq -32(%rbp), %r14
+	movq -24(%rbp), %r13
+	movq -16(%rbp), %r12
+	movq -8(%rbp), %rbx
 	movq %rdx, (%rcx)
 	leave
 	ret
-.L3:
+.L4:
 	pushq %rbp
 	movq (%rdx), %rbp
+	movq -40(%rbp), %r15
+	movq -32(%rbp), %r14
+	movq -24(%rbp), %r13
+	movq -16(%rbp), %r12
+	movq -8(%rbp), %rbx
 	leave
 	ret
 
 /* void *leave_context(void *arg, void *top); */
 leave_context:
 	pushq %rbp
-	movq %rdi, %rax
+	movq %rbx, -8(%rsp)
+	movq %r12, -16(%rsp)
+	movq %r13, -24(%rsp)
+	movq %r14, -32(%rsp)
+	movq %r15, -40(%rsp)
 	movq %rsp, %rdx
-	leaq -16(%rsi), %rbp
+	movq %rdi, %rax
+	leaq -16(%rsi), %rsp
 	leave
 	ret
