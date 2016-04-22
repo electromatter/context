@@ -1,4 +1,4 @@
-/* context.s - C coroutines for the sysv amd64 calling convention
+/* context.s - C coroutines for x86_64
  *
  * Copyright (c) 2016, Eric Chai <electromatter@gmail.com>
  *
@@ -55,11 +55,15 @@ enter_context:
 	movq %r13, -24(%rsp)
 	movq %r14, -32(%rsp)
 	movq %r15, -40(%rsp)
-	movq %rdx, -48(%rsp)
+	fstcw -44(%rsp)
+	stmxcsr -48(%rsp)
+	movq %rdx, -56(%rsp)
 	movq %rdi, %rax
 	movq %rsi, %rsp
 	call .L4
-	movq -48(%rbp), %rcx
+	movq -56(%rbp), %rcx
+	ldmxcsr -48(%rbp)
+	fldcw -44(%rbp)
 	movq -40(%rbp), %r15
 	movq -32(%rbp), %r14
 	movq -24(%rbp), %r13
@@ -71,6 +75,8 @@ enter_context:
 .L4:
 	pushq %rbp
 	movq (%rdx), %rbp
+	ldmxcsr -48(%rbp)
+	fldcw -44(%rbp)
 	movq -40(%rbp), %r15
 	movq -32(%rbp), %r14
 	movq -24(%rbp), %r13
@@ -87,6 +93,8 @@ leave_context:
 	movq %r13, -24(%rsp)
 	movq %r14, -32(%rsp)
 	movq %r15, -40(%rsp)
+	fstcw -44(%rsp)
+	stmxcsr -48(%rsp)
 	movq %rsp, %rdx
 	movq %rdi, %rax
 	leaq -16(%rsi), %rsp
