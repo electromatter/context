@@ -1,4 +1,4 @@
-/* context.h - C coroutines for x86_64
+/* context.h - C(++) coroutines for x86_64
  *
  * Copyright (c) 2016, Eric Chai <electromatter@gmail.com>
  *
@@ -58,6 +58,10 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* (Re-)initialize a context for use */
 void reset_context(void *(*func)(void *arg), void *top, void **sp);
 /* Returns arg from the previous leave_context */
@@ -67,5 +71,9 @@ void *call_context(void *arg, void *top, void **sp, void *(*func)(void *arg));
 
 /* Returns arg from the parent enter_context */
 void *leave_context(void *arg, void *top);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
