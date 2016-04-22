@@ -17,7 +17,7 @@
  * sysv_amd64:
  *  - Stacks on should be aligned to 16-bytes on x86_64.
  *  - The initial stack uses 32 bytes before calling func
- *  - Calls to leave_context use an additional 56 bytes (saved %rip and %rbp)
+ *  - Calls to leave_context use an additional 64 bytes (saved %rip and %rbp)
  *      within the context
  *  - A red zone of 128 bytes past the maximum push depth must be usable
  *
