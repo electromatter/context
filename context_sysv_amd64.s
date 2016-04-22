@@ -62,7 +62,7 @@ enter_context:
 	movq %rdx, -56(%rsp)
 	movq %rdi, %rax
 	movq %rsi, %rsp
-	call .L4
+	call .L3
 	movq -56(%rbp), %rcx
 	ldmxcsr -48(%rbp)
 	fldcw -44(%rbp)
@@ -74,7 +74,7 @@ enter_context:
 	movq %rdx, (%rcx)
 	leave
 	ret
-.L4:
+.L3:
 	pushq %rbp
 	movq (%rdx), %rbp
 	ldmxcsr -48(%rbp)
