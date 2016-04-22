@@ -32,8 +32,14 @@ reset_context:
 	leave
 	ret
 .L1:
+	.cfi_startproc
+
 	pushq %rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset rbp,-16
 	movq %rsp, %rbp
+	.cfi_def_cfa_register rbp
+
 	subq $8, %rsp
 	pushq %rdi
 .L2:
@@ -44,41 +50,68 @@ reset_context:
 	callq *%rcx
 	movq %rax, %rdi
 	jmp .L2
+	.cfi_endproc
 
 	.p2align 4,,15
 	.globl enter_context
 	.type enter_context, @function
 /* void *enter_context(void *arg, void *top, void **sp); */
 enter_context:
+	.cfi_startproc
+
 	pushq %rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset rbp,-16
 	movq %rsp, %rbp
-	movq %rbx, -8(%rsp)
-	movq %r12, -16(%rsp)
-	movq %r13, -24(%rsp)
-	movq %r14, -32(%rsp)
-	movq %r15, -40(%rsp)
-	fstcw -44(%rsp)
-	stmxcsr -48(%rsp)
-	movq %rdx, -56(%rsp)
+	.cfi_def_cfa_register rbp
+
+	movq %rbx, -8(%rbp)
+	.cfi_offset rbx,-24
+	movq %r12, -16(%rbp)
+	.cfi_offset r12,-32
+	movq %r13, -24(%rbp)
+	.cfi_offset r13,-40
+	movq %r14, -32(%rbp)
+	.cfi_offset r14,-48
+	movq %r15, -40(%rbp)
+	.cfi_offset r15,-56
+	fstcw -48(%rbp)
+	.cfi_offset fcw,-64
+	stmxcsr -56(%rbp)
+	.cfi_offset mxcsr,-72
+	movq %rdx, -64(%rbp)
+
 	movq %rdi, %rax
 	movq %rsi, %rsp
 	call .L3
-	movq -56(%rbp), %rcx
-	ldmxcsr -48(%rbp)
-	fldcw -44(%rbp)
+
+	movq -64(%rbp), %rcx
+	ldmxcsr -56(%rbp)
+	.cfi_restore mxcsr
+	fldcw -48(%rbp)
+	.cfi_restore fcw
 	movq -40(%rbp), %r15
+	.cfi_restore r15
 	movq -32(%rbp), %r14
+	.cfi_restore r14
 	movq -24(%rbp), %r13
+	.cfi_restore r13
 	movq -16(%rbp), %r12
+	.cfi_restore r12
 	movq -8(%rbp), %rbx
+	.cfi_restore rbx
+
 	movq %rdx, (%rcx)
+
 	leave
+	.cfi_def_cfa rsp, 8
 	ret
+	.cfi_endproc
 .L3:
 	pushq %rbp
 	movq (%rdx), %rbp
-	ldmxcsr -48(%rbp)
-	fldcw -44(%rbp)
+	ldmxcsr -56(%rbp)
+	fldcw -48(%rbp)
 	movq -40(%rbp), %r15
 	movq -32(%rbp), %r14
 	movq -24(%rbp), %r13
@@ -98,8 +131,8 @@ leave_context:
 	movq %r13, -24(%rsp)
 	movq %r14, -32(%rsp)
 	movq %r15, -40(%rsp)
-	fstcw -44(%rsp)
-	stmxcsr -48(%rsp)
+	fstcw -48(%rsp)
+	stmxcsr -56(%rsp)
 	movq %rsp, %rdx
 	movq %rdi, %rax
 	leaq -16(%rsi), %rbp
