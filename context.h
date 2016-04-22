@@ -1,4 +1,4 @@
-/* context.h - C(++) coroutines for x86_64
+/* context.h - C(++) coroutines
  *
  * Copyright (c) 2016, Eric Chai <electromatter@gmail.com>
  *
