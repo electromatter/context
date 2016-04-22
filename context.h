@@ -32,8 +32,12 @@
  * The first call to enter_context to a freshly reset context will
  * call func with arg with the stack of the context.
  *
+ * The type of values passed via enter_context may need to be volatie to
+ * prevent the optimizer from reordering accesses across leave_context calls.
+ * This includes the argument to func.
+ *
  * The return value of func is passed back to the parent context as
- * if leave_context(arg=<return value>) were called. The context is
+ * if leave_context(<return value>, top) were called. The context is
  * left in the reset state.
  *
  * It is save to reset a context that has a non-empty stack, so long
