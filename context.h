@@ -56,7 +56,7 @@
  * Uncaught C++ exceptions from within an active context are passed
  * to the parent context. The originating context's stack will be
  * properly unwound, however it will be left in an inconsistent state.
- * One use reset_context to bring the context into a known state again.
+ * One must use reset_context to bring the context into a known state again.
  */
 
 #ifndef CONTEXT_H
