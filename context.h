@@ -32,7 +32,7 @@
  * The first call to enter_context to a freshly reset context will
  * call func with arg with the stack of the context.
  *
- * The type of values passed via enter_context may need to be volatie to
+ * The type of values passed via enter_context may need to be volatile to
  * prevent the optimizer from reordering accesses across leave_context calls.
  * This includes the argument to func.
  *
@@ -40,7 +40,7 @@
  * if leave_context(<return value>, top) were called. The context is
  * left in the reset state.
  *
- * It is save to reset a context that has a non-empty stack, so long
+ * It is safe to reset a context that has a non-empty stack, so long
  * as it is not active, but it may cause resource leaks if there are
  * any non trivial values that exist on the context's stack.
  *
@@ -48,7 +48,7 @@
  * stub function that throws an uncaught exceptions and catch the exception
  * outside of call_context.
  *
- * It is save to chain contexts, so long as one does not create loops.
+ * It is safe to chain contexts, so long as one does not create loops.
  *
  * It is also safe to use leave_context from within the function called
  * by call_context.
