@@ -26,7 +26,7 @@
  * A context is defined as a stack together with a saved stack pointer.
  *
  * A context is active if it is part of the current stack, that is
- * if the program has called enter_context, and there is no coorisponding
+ * if the program has called enter_context, and there is no corresponding
  * leave_context call.
  *
  * The first call to enter_context to a freshly reset context will
